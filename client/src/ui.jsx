@@ -1,6 +1,8 @@
 import React from 'react';
 
 export const isVideo = (u = '') => /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(u);
+export const youtubeId = (u = '') =>
+  (u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/) || [])[1];
 export const Lines = ({ text = '' }) =>
   String(text).split('\n').map((l, i, a) => <React.Fragment key={i}>{l}{i < a.length - 1 && <br />}</React.Fragment>);
 export const Mi = ({ name, className = '' }) => <span className={`material-symbols-outlined ${className}`}>{name}</span>;
