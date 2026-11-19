@@ -3,6 +3,14 @@ import React from 'react';
 export const isVideo = (u = '') => /\.(mp4|webm|mov|m4v|ogg)(\?|$)/i.test(u);
 export const youtubeId = (u = '') =>
   (u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/) || [])[1];
+export const driveId = (u = '') =>
+  (u.match(/drive\.google\.com\/file\/d\/([\w-]+)/) || u.match(/drive\.google\.com\/(?:open|uc)\?(?:.*&)?id=([\w-]+)/) || [])[1];
+// YouTube / Google Drive links -> iframe embed URL (null for anything else)
+export const embedUrl = (u = '') => {
+  const y = youtubeId(u); if (y) return `https://www.youtube.com/embed/${y}?rel=0`;
+  const d = driveId(u); if (d) return `https://drive.google.com/file/d/${d}/preview`;
+  return null;
+};
 export const Lines = ({ text = '' }) =>
   String(text).split('\n').map((l, i, a) => <React.Fragment key={i}>{l}{i < a.length - 1 && <br />}</React.Fragment>);
 export const Mi = ({ name, className = '' }) => <span className={`material-symbols-outlined ${className}`}>{name}</span>;
