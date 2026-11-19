@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from './api';
-import { Lines, Mi, SocialIcon, isVideo, parseSocials, youtubeId } from './ui';
+import { Lines, Mi, SocialIcon, isVideo, parseSocials, embedUrl } from './ui';
 
 const NAV = [['about', 'About'], ['projects', 'Projects'], ['skills', 'Skills'], ['experience', 'Experience'],
   ['leadership', 'Leadership'], ['certificates', 'Certificates'], ['contact', 'Contact']];
@@ -393,12 +393,12 @@ export default function Site() {
 
 function Media({ p, compact }) {
   const url = p.media_url;
-  const yt = youtubeId(url);
+  const embed = embedUrl(url);
   return (
     <div className={`relative w-full ${compact ? 'aspect-video min-h-[200px]' : 'h-full min-h-[360px]'} bg-surface-container-lowest rounded overflow-hidden flex flex-col justify-between border border-surface-container-highest group`}>
-      {url && (yt
-        ? <iframe className="absolute inset-0 w-full h-full z-[5]" src={`https://www.youtube.com/embed/${yt}?rel=0`} title={p.title}
-            allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
+      {url && (embed
+        ? <iframe className="absolute inset-0 w-full h-full z-[5]" src={embed} title={p.title}
+            allow="autoplay; accelerometer; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
         : isVideo(url)
           ? <video className="w-full h-full object-cover absolute inset-0 opacity-80 group-hover:opacity-95 transition-opacity duration-300" src={url} autoPlay loop muted playsInline controls />
           : <img alt={p.title} className="w-full h-full object-cover absolute inset-0 opacity-80 group-hover:opacity-95 transition-opacity duration-300" src={url} />)}
@@ -406,7 +406,7 @@ function Media({ p, compact }) {
       <div className="relative z-10 flex items-center justify-between p-space-md border-b border-surface-container-highest/60 bg-surface-container-lowest/60 backdrop-blur-md pointer-events-none">
         <div className="flex items-center gap-space-xs min-w-0">
           <span className="w-2 h-2 rounded-full bg-error animate-pulse"></span>
-          <span className="font-label-code text-label-code text-primary-container uppercase tracking-wider font-semibold">{(yt || isVideo(url)) ? (compact ? 'LIVE // DEMO REEL' : 'REC // PROD DEMO') : 'PREVIEW'}</span>
+          <span className="font-label-code text-label-code text-primary-container uppercase tracking-wider font-semibold">{(embed || isVideo(url)) ? (compact ? 'LIVE // DEMO REEL' : 'REC // PROD DEMO') : 'PREVIEW'}</span>
           <span className="text-surface-container-highest font-label-code">/</span>
           <span className="font-label-code text-label-code text-on-surface truncate">{p.media_caption || p.title}</span>
         </div>
